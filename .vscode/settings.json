@@ -56,5 +56,5 @@
         "temp/": true,
         "Temp/": true
     },
-    "dotnet.defaultSolution": "PruebaShooterFernando.sln"
+    "dotnet.defaultSolution": "ShooterFernando.sln"
 }

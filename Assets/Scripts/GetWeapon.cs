@@ -7,6 +7,7 @@ public class GetWeapon : MonoBehaviour
         if(other.CompareTag("Weapon"))
         {
             other.gameObject.SetActive(false);
+
         }
     }
 }

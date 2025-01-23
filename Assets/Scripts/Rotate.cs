@@ -2,20 +2,27 @@ using UnityEngine;
 
 public class Rotate : MonoBehaviour
 {
-    [SerializeField]
+ [SerializeField]
     private float _rotateSpeed = 5;
-    [SerializeField]
-    private float _translate=1;
+    [SerializeField] 
+     private bool _isRotating;
 
-    
+    public bool isRotating
+    {
+        get {return _isRotating;}
+        set {_isRotating = value;}
+    }
     void Update()
     {
-        gameObject.transform.Rotate(0f,_rotateSpeed * Time.deltaTime,0f);
-        gameObject.transform.Translate(0f, _translate,0f);
-            if(_translate<= 5)
-            {
-                _translate++;
-            }
-        
+        RotateWeapon();
+    }
+
+    private void RotateWeapon()
+    {
+        if(_isRotating)
+        {
+            gameObject.transform.Rotate(0f,_rotateSpeed * Time.deltaTime,0f); 
+        }
+
     }
 }
