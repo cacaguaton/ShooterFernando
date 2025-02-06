@@ -27,8 +27,18 @@ public class Gun : MonoBehaviour
 
     private Text _bulletText;
 
-    public void shoot()
+    private GetWeapon _getWeapon;
+
+    public void Shoot()
     {
+        if(_currentBulletNumber == 0)
+        {
+            if(_totalBulletNumber == 0)
+            {
+                RemoveWeapon();
+            }
+            return;
+        }
 
         _weaponAnimator.Play("Shoot", -1, 0f);
         GameObject.Instantiate(_bullet,_bulletPivot.position,_bulletPivot.rotation);
@@ -38,27 +48,38 @@ public class Gun : MonoBehaviour
         
     }
 
-    public void PickUpWeapon()
+    private void RemoveWeapon()
+    {
+        _getWeapon.RemoveWeapon();
+        _getWeapon = null;
+    }
+
+    public void PickUpWeapon(GetWeapon getWeapon)
     {
         _totalBulletNumber = _maxBulletNumber;
-        
+        _getWeapon =   getWeapon;
         Reoload();
         _weaponAnimator.Play("GetWeapon");
-     
     
     }
 
     public void Reoload()
     {
-        if(_totalBulletNumber >= _cartridgeBulletsNumber)
+        if(_currentBulletNumber == _cartridgeBulletsNumber ||  _totalBulletNumber == 0)
         {
-            _currentBulletNumber = _cartridgeBulletsNumber;
+            return;
+        }
+        int bulletsNeeded = _cartridgeBulletsNumber - _currentBulletNumber;
+        if(_totalBulletNumber >= _cartridgeBulletsNumber )
+        {
+            _currentBulletNumber = bulletsNeeded;
         }else if(_totalBulletNumber > 0)
         {
             _currentBulletNumber = _totalBulletNumber;
         }
         _totalBulletNumber -= _currentBulletNumber;
         UptateBulletText();
+        _weaponAnimator.Play("Reload");
     
     }
 
@@ -70,4 +91,5 @@ public class Gun : MonoBehaviour
         }
         _bulletText.text = _currentBulletNumber + "/" + _totalBulletNumber;
     }
+
 }
