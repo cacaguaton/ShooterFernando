@@ -7,11 +7,31 @@ public class UIController : MonoBehaviour
     [SerializeField]
     private GameObject _bulletUI;
 
-    private Text _bulletsUI;
-    public Text  BulletsText;
-
-    public void ShowBulletUI(bool show)
+    private Text _bulletsText;
+    public Text  BulletsText
     {
-        _bulletUI.SetActive(show);
+        get{return _bulletsText;}
     }
+
+    [SerializeField]
+  private GameObject _gameOverUi;
+  [SerializeField]
+  private GameObject _gameWinUi;
+ 
+ 
+ public void ShowBulletsUi(bool show)
+ {
+    _bulletUI.SetActive(show);
+ 
+ }
+  public void ShowGameOverUI(bool show)
+ {
+    _gameOverUi.SetActive(show);
+ 
+ }
+ public void ShowGameWinUI(bool show)
+ {
+   _gameWinUi.SetActive(show);
+ 
+ }
 }

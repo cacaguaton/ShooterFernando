@@ -37,6 +37,7 @@ public class GetWeapon : MonoBehaviour
         weapon.localRotation = Quaternion.identity;
         _weapon = weapon.GetComponent<Gun>();
         _weapon.PickUpWeapon(this);
+        _uiController.ShowBulletUI(true);
 
     }
     
@@ -44,5 +45,6 @@ public class GetWeapon : MonoBehaviour
     {
         Destroy(_weapon.gameObject);
         _weapon = null;
+        _uiController.ShowBulletUI(false);
     }
 }

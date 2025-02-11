@@ -40,6 +40,7 @@ public class Gun : MonoBehaviour
             return;
         }
 
+        SoundManager.instance.Play("Shoot");
         _weaponAnimator.Play("Shoot", -1, 0f);
         GameObject.Instantiate(_bullet,_bulletPivot.position,_bulletPivot.rotation);
         _currentBulletNumber--;
