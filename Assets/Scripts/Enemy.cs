@@ -4,49 +4,38 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
-    [SerializeField]
-    private string _enemyTolook = "Player";
+ [SerializeField]
+    private string enemyToLook = "Player";
     [SerializeField]
     private float speed = 1f;
-    private Transform objetive;
-    private Health _health;
+    private Transform objective;
+    private Health health;
     private void Start()
     {
-        objetive = GameObject.FindGameObjectWithTag(_enemyTolook).transform;
-
+        objective = GameObject.FindGameObjectWithTag(enemyToLook).transform;
+        health = GetComponent<Health>();
+    }
+    private void Update()
+    {
+        FollowObjective(); 
+    }
+    private void FollowObjective()
+    {
+        Vector3 direction = (objective.position - transform.position).normalized;
+        transform.position += direction * speed * Time.deltaTime;
+        transform.rotation = Quaternion.LookRotation(direction);
     }
 
     private void OnCollisionEnter(Collision collision)
     {
-        if(collision.gameObject.CompareTag("Bullet"))
+        if (collision.gameObject.CompareTag("Bullet"))
         {
-            _health.TakeDamage(1);
+            health.TakeDamage(collision.gameObject.GetComponent<Bullet>().Damage);
+            Destroy(collision.gameObject);
         }
     }
     public void Die()
     {
         Destroy(gameObject);
-    }
-    private void Uptate()
-    {
-        FollowObjetive();
-    }
-    private void FollowObjetive()
-    {
-        Vector3 direction = (objetive.position - transform.position).normalized;
-        transform.position+= direction * speed * Time.deltaTime;
-        transform.rotation = Quaternion.LookRotation(direction);
-
-
-    }
-    void Update()
-    {
-        FollowObjective();
-    }
-    private void FollowObjective()
-    {
-        Vector3 direction=(objetive.position-transform.position).normalized;
-        transform.position+=direction * speed * Time.deltaTime;
-        transform.rotation=Quaternion.LookRotation(direction);
     }
 }

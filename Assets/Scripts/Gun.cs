@@ -1,7 +1,7 @@
-using System;
-using TMPro;
+using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.UI;
+
 
 public class Gun : MonoBehaviour
 {
@@ -9,88 +9,79 @@ public class Gun : MonoBehaviour
     private GameObject _bullet;
     [SerializeField]
     private Transform _bulletPivot;
-
     [SerializeField]
     private Animator _weaponAnimator;
-
     [SerializeField]
     private int _maxBulletNumber = 20;
-
     [SerializeField]
-
-    private int _cartridgeBulletsNumber = 5;
-
-    private int _totalBulletNumber = 0;
-
-    private int _currentBulletNumber = 0;
-
-
+    private int _cartidgeBulletsNumber = 5;
+    private int _totalBulletsNumber = 0;
+    private int _currentBulletsNumber = 0;
     private Text _bulletText;
-
     private GetWeapon _getWeapon;
-
-    public void Shoot()
-    {
-        if(_currentBulletNumber == 0)
-        {
-            if(_totalBulletNumber == 0)
-            {
-                RemoveWeapon();
-            }
-            return;
-        }
-
-        SoundManager.instance.Play("Shoot");
-        _weaponAnimator.Play("Shoot", -1, 0f);
-        GameObject.Instantiate(_bullet,_bulletPivot.position,_bulletPivot.rotation);
-        _currentBulletNumber--;
-        UptateBulletText();
-        
-        
-    }
 
     private void RemoveWeapon()
     {
         _getWeapon.RemoveWeapon();
         _getWeapon = null;
     }
-
-    public void PickUpWeapon(GetWeapon getWeapon)
+        public void PickUpWeapon(GetWeapon getWeapon)
+        {
+            _getWeapon = getWeapon;
+            _totalBulletsNumber = _maxBulletNumber;
+            Reload();
+            _weaponAnimator.Play("GetWeapon");
+            UpdateBulletText();
+        }
+    public void Shoot ()
     {
-        _totalBulletNumber = _maxBulletNumber;
-        _getWeapon =   getWeapon;
-        Reoload();
-        _weaponAnimator.Play("GetWeapon");
-    
+        if (_currentBulletsNumber == 0)
+        {
+            if (_totalBulletsNumber == 0)
+            {
+                RemoveWeapon();
+            }
+            return;
+        }
+        SoundManager.instance.Play("Shoot");
+        _weaponAnimator.Play("Shoot", -1, 0);
+    GameObject.Instantiate(_bullet, _bulletPivot.position, _bulletPivot.rotation);  
+    _currentBulletsNumber --;
+    UpdateBulletText();
     }
-
-    public void Reoload()
+    public void PickUpWeapon()
     {
-        if(_currentBulletNumber == _cartridgeBulletsNumber ||  _totalBulletNumber == 0)
+        _totalBulletsNumber = _maxBulletNumber;
+        _currentBulletsNumber = _cartidgeBulletsNumber;
+        _weaponAnimator.Play("GetWeapon");
+        UpdateBulletText();
+    }
+    public void Reload()
+    {
+        if (_currentBulletsNumber >= _cartidgeBulletsNumber || _totalBulletsNumber == 0)
         {
             return;
         }
-        int bulletsNeeded = _cartridgeBulletsNumber - _currentBulletNumber;
-        if(_totalBulletNumber >= _cartridgeBulletsNumber )
+        int bulletsNeeded = _cartidgeBulletsNumber - _currentBulletsNumber;
+        if (_totalBulletsNumber >= _cartidgeBulletsNumber)
         {
-            _currentBulletNumber = bulletsNeeded;
-        }else if(_totalBulletNumber > 0)
+            _currentBulletsNumber = bulletsNeeded;
+        }   
+        else if (_totalBulletsNumber > 0)
         {
-            _currentBulletNumber = _totalBulletNumber;
+            _currentBulletsNumber = _totalBulletsNumber;
         }
-        _totalBulletNumber -= _currentBulletNumber;
-        UptateBulletText();
+        SoundManager.instance.Play("Reload");
+        _totalBulletsNumber -= _currentBulletsNumber; 
+        UpdateBulletText();
         _weaponAnimator.Play("Reload");
-    
     }
-
-    private void UptateBulletText()
+    private void UpdateBulletText()
     {
         if(_bulletText == null)
         {
-            _bulletText = GameObject.Find("BulletText").GetComponent<Text>();
+            _bulletText = _getWeapon.GetComponent<UIController>().BulletsText;
         }
-        _bulletText.text = _currentBulletNumber + "/" + _totalBulletNumber;
+        _bulletText.text = _currentBulletsNumber + "/" + _totalBulletsNumber;
     }
-
 }

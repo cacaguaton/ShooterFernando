@@ -1,24 +1,24 @@
+using Unity.Mathematics;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class GetWeapon : MonoBehaviour
 {
-    private Gun _weapon;
+ private Gun _weapon;
     public Gun Weapon
     {
-        get{return _weapon;}
+    get{return _weapon;}
     }
-    
     [SerializeField]
     private Transform _gunPivot;
-
     private UIController _uiController;
 
     private void Start()
     {
         _uiController = gameObject.GetComponent<UIController>();
-        _uiController.ShowBulletUI(false);
+        _uiController.showBulletsUI(false);
     }
-    
+
     void OnTriggerEnter(Collider other)
     {
         if(other.CompareTag("Weapon")&& _weapon == null)
@@ -26,25 +26,22 @@ public class GetWeapon : MonoBehaviour
             GrabWeapon(other.transform);
         }
     }
-
     private void GrabWeapon(Transform weapon)
     {
-        
-        weapon.GetComponent<Rotate>().isRotating = false;
+        weapon.GetComponent<Rotate>().IsRotating = false;
         weapon.GetComponent<BoxCollider>().enabled = false;
         weapon.SetParent(_gunPivot);
         weapon.localPosition = Vector3.zero;
-        weapon.localRotation = Quaternion.identity;
+        weapon.localRotation = quaternion.identity;
         _weapon = weapon.GetComponent<Gun>();
         _weapon.PickUpWeapon(this);
-        _uiController.ShowBulletUI(true);
-
+        _uiController.showBulletsUI(true);
     }
-    
     public void RemoveWeapon()
     {
         Destroy(_weapon.gameObject);
         _weapon = null;
-        _uiController.ShowBulletUI(false);
+        gameObject.GetComponent<UIController>().showBulletsUI(false);
+        _uiController.showBulletsUI(false);
     }
 }

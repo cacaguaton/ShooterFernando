@@ -2,27 +2,27 @@ using UnityEngine;
 
 public class Rotate : MonoBehaviour
 {
- [SerializeField]
+  [SerializeField]
     private float _rotateSpeed = 5;
-    [SerializeField] 
-     private bool _isRotating;
+    // Start is called once before the first execution of Update after the MonoBehaviour is created
+  [SerializeField]
+    private bool _isRotating = true;
 
-    public bool isRotating
+    public bool IsRotating 
     {
-        get {return _isRotating;}
-        set {_isRotating = value;}
+      get {return _isRotating;}
+      set {_isRotating = value;}
     }
+    // Update is called once per frame
     void Update()
     {
-        RotateWeapon();
+      RotateWeapon(); 
     }
-
     private void RotateWeapon()
     {
-        if(_isRotating)
-        {
-            gameObject.transform.Rotate(0f,_rotateSpeed * Time.deltaTime,0f); 
-        }
-
+      if (_isRotating)
+      {
+        gameObject.transform.Rotate(0f, _rotateSpeed * Time.deltaTime, 0f);
+      }
     }
 }

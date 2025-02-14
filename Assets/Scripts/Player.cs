@@ -2,24 +2,29 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
- private Health _health;
+    private Health health;
     private UIController uiController;
-   
-    void Start()
+    private bool isPlaying = true;
+    private void Start()
     {
-        _health = GetComponent<Health>();
+        health =GetComponent<Health>();
         uiController = GetComponent<UIController>();
-        
     }
-     private void OnCollisionEnter(Collision collision)
+    private void OnCollisionEnter(Collision collision)
     {
-        if(collision.gameObject.CompareTag("Enemy"))
+        if (collision.gameObject.CompareTag("Enemy"))
         {
-            _health.TakeDamage(1);
+            health.TakeDamage(1);
             Vector3 pushDirection = (transform.position - collision.transform.position).normalized;
+            transform.position += pushDirection * 0.5f;
         }
-    }
-    public void Die()
+        else if (collision.gameObject.CompareTag("Key"))
+        {
+            isPlaying = false;
+            uiController.ShowWinUI(true);
+        }
+    } 
+    public void Die ()
     {
         uiController.ShowGameOverUI(true);
     }
