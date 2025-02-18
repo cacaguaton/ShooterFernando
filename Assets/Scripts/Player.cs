@@ -9,10 +9,11 @@ public class Player : MonoBehaviour
     {
         health =GetComponent<Health>();
         uiController = GetComponent<UIController>();
+        SoundManager.instance.PlayMusic("Fondo");
     }
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.CompareTag("Enemy"))
+        if (collision.gameObject.CompareTag("Enemy") && isPlaying)
         {
             health.TakeDamage(1);
             Vector3 pushDirection = (transform.position - collision.transform.position).normalized;
@@ -27,5 +28,8 @@ public class Player : MonoBehaviour
     public void Die ()
     {
         uiController.ShowGameOverUI(true);
+        isPlaying = false;
+        SoundManager.instance.StopMusic();
+         SoundManager.instance.Play("Muerte");
     }
 }

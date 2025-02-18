@@ -32,10 +32,12 @@ public class Enemy : MonoBehaviour
         {
             health.TakeDamage(collision.gameObject.GetComponent<Bullet>().Damage);
             Destroy(collision.gameObject);
+            SoundManager.instance.Play("Dano");
         }
     }
     public void Die()
     {
         Destroy(gameObject);
+        SoundManager.instance.Play("MuerteE");
     }
 }
